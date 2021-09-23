@@ -222,8 +222,10 @@ function getNearestPalindrome(date) {
 const dateInput = document.querySelector("#dob-input");
 const checkBtn = document.querySelector("#check-dob");
 const showOutput = document.querySelector("#output");
+const gifImg = document.querySelector("#loading");
 
 function clickHandler(event) {
+    showOutput.style.display = "block";
     const bday = dateInput.value;
     if(bday != "") {
         var dateItems = bday.split('-');
@@ -236,6 +238,7 @@ function clickHandler(event) {
         var checkPal = checkPalindromeAllDateFormats(date);
         
         if(checkPal[0]) {
+            showOutput.style.color = "#84CC16";
             showOutput.innerText = "Yayy!! Your birthday is a palindrome in the format: " + checkPal[1] + "🎉🎉🎉";
         } else {
             var [ctr, nearDate, frmt] = getNearestPalindrome(date);
@@ -243,16 +246,34 @@ function clickHandler(event) {
             // console.log("date in input",date);
             // console.log("date format", frmt);
             if(ctr == 1) {
+                showOutput.style.color = "red";
                 showOutput.innerText = "Sorry, your birthday is not a palindrome" + " 😭😭😭" + "\n" + ` But don't worry! Your nearest palindrome date is: ${nearDate.day}-${nearDate.month}-${nearDate.year}, if you rearrange in the format: ${frmt} and you just missed it by: ${ctr} day!`;
             } else {
+                showOutput.style.color = "red";
                 showOutput.innerText = "Sorry, your birthday is not a palindrome" + " 😭😭😭" + "\n" + ` But don't worry! Your nearest palindrome date is: ${nearDate.day}-${nearDate.month}-${nearDate.year}, if you rearrange in the format: ${frmt} and you just missed it by: ${ctr} days!`;
             }
             
         }
+    } else {
+        showOutput.style.color = "red";
+        showOutput.innerText = "Date cannot be empty";
     }
     
    
 }
 
 
-checkBtn.addEventListener("click", clickHandler);
+checkBtn.addEventListener("click", () => {
+    if(dateInput.value === "") {
+        showOutput.style.color = "red";
+        showOutput.innerText = "Date cannot be empty";
+    } else {
+        showOutput.style.display = "none";
+        gifImg.style.display = "block";
+        setTimeout(() => {
+            gifImg.style.display = "none";
+            clickHandler();
+        }, 4700);
+    }
+    
+});
