@@ -224,7 +224,7 @@ const checkBtn = document.querySelector("#check-dob");
 const showOutput = document.querySelector("#output");
 const gifImg = document.querySelector("#loading");
 
-function clickHandler(event) {
+function clickHandler() {
     showOutput.style.display = "block";
     const bday = dateInput.value;
     if(bday != "") {
