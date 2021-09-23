@@ -62,7 +62,7 @@ function checkPalindromeAllDateFormats(date) {
         }
     }
 
-    return isPalindrome;
+    return [isPalindrome, dateFormats[i]];
 }
 
 function isLeapYear(year) { 
@@ -130,14 +130,14 @@ function getNextPalindromeDate(date) {
         countDays = countDays + 1;
         var isPal = checkPalindromeAllDateFormats(nextDate);
 
-        if(isPal) {
+        if(isPal[0]) {
             break;
         }
 
         nextDate = incrementDate(nextDate);
     }
-
-    return [countDays, nextDate];
+    
+    return [countDays, nextDate, isPal[1]];
 }
 
 function decrementDate(date) {
@@ -189,20 +189,20 @@ function getPrevPalindromeDate(date) {
         countDaysPrev = countDaysPrev + 1;
         var isPal = checkPalindromeAllDateFormats(prevDate);
 
-        if(isPal) {
+        if(isPal[0]) {
             break;
         }
 
         prevDate = decrementDate(prevDate);
     }
-
-    return [countDaysPrev, prevDate];
+    
+    return [countDaysPrev, prevDate, isPal[1]];
 }
 
 function getNearestPalindrome(date) {
     const prev = getPrevPalindromeDate(date);
     const next = getNextPalindromeDate(date);
-
+    
     if(prev[0] < next[0]) {
         return prev;
     } else {
@@ -211,10 +211,48 @@ function getNearestPalindrome(date) {
 
 }
 
-var date = {
-    day: 12,
-    month: 2,
-    year: 2020
-};
+// var date = {
+//     day: 11,
+//     month: 02,
+//     year: 2020
+// };
 
-console.log(getNearestPalindrome(date));
+// console.log(getNearestPalindrome(date));
+
+const dateInput = document.querySelector("#dob-input");
+const checkBtn = document.querySelector("#check-dob");
+const showOutput = document.querySelector("#output");
+
+function clickHandler(event) {
+    const bday = dateInput.value;
+    if(bday != "") {
+        var dateItems = bday.split('-');
+        var date = {
+            day: Number(dateItems[2]),
+            month: Number(dateItems[1]),
+            year: Number(dateItems[0])
+        };
+
+        var checkPal = checkPalindromeAllDateFormats(date);
+        
+        if(checkPal[0]) {
+            showOutput.innerText = "Yayy!! Your birthday is a palindrome in the format: " + checkPal[1] + "🎉🎉🎉";
+        } else {
+            var [ctr, nearDate, frmt] = getNearestPalindrome(date);
+            // console.log("nearest date", nearDate);
+            // console.log("date in input",date);
+            // console.log("date format", frmt);
+            if(ctr == 1) {
+                showOutput.innerText = "Sorry, your birthday is not a palindrome" + " 😭😭😭" + "\n" + ` But don't worry! Your nearest palindrome date is: ${nearDate.day}-${nearDate.month}-${nearDate.year}, if you rearrange in the format: ${frmt} and you just missed it by: ${ctr} day!`;
+            } else {
+                showOutput.innerText = "Sorry, your birthday is not a palindrome" + " 😭😭😭" + "\n" + ` But don't worry! Your nearest palindrome date is: ${nearDate.day}-${nearDate.month}-${nearDate.year}, if you rearrange in the format: ${frmt} and you just missed it by: ${ctr} days!`;
+            }
+            
+        }
+    }
+    
+   
+}
+
+
+checkBtn.addEventListener("click", clickHandler);
