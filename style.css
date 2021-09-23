@@ -48,6 +48,7 @@ button {
     padding: 0.5rem;
     border-radius: 0.5rem;
     background-color: #A5B4FC;
+    font-size: 1.1rem;
 
 }
 
@@ -78,7 +79,6 @@ button {
 .social a {
     color: black;
     padding: 2rem;
-    border: 1px solid black;
     box-sizing: border-box;
     text-decoration: none;
 }
